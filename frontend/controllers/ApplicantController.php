@@ -35,7 +35,7 @@ class ApplicantController extends Controller
     {
         $searchModel = new ApplicantSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new Applicant();
+        $model = new Applicant(['scenario'=>'create']);
 
          if ($model->load(Yii::$app->request->post()) && $model->save())
         {
