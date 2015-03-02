@@ -15,11 +15,12 @@ use yii\filters\VerbFilter;
  */
 class ApplicantController extends Controller
 {
+
     public function behaviors()
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
                 ],
@@ -33,21 +34,38 @@ class ApplicantController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ApplicantSearch();
+        $searchModel  = new ApplicantSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new Applicant(['scenario'=>'create']);
-
-         if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
+        $model        = new Applicant();
+        
+//        return $this->render('confirm',['model'=>$model]);
+        
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save() ) {
+//            return $this->render('confirm',['model'=>$model]);
+            
+//            $model->save();
+            $applicant = $model->firstname . ' ' . $model->lastname . ' ได้ทำการลงทะเบียนแล้วในลำดับที่ ' . $model->id;
+            
             $model = new Applicant(); //reset model
+            Yii::$app->getSession()->setFlash('success','คุณ ' . $applicant .' ' ,true);
+          
+            
+//            return $this->render('confirm',['model'=>$model]);
         }
+//        if ($model->load(Yii::$app->request->post()) ) {
+////           return $this->redirect((['view', 'id' => $model->id]));
+//            return $this->redirect('confirm',['model'=>$model]);
+//        }
+            return $this->render('index',
+                    [
+                    'searchModel'  => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'model'        => $model,
+            ]);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'model' => $model,
-        ]);
-
+        
+//return $this->render('confirm');
 
 //        return $this->render('index', [
 //            'searchModel' => $searchModel,
@@ -62,8 +80,9 @@ class ApplicantController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
+        return $this->render('view',
+                [
+                'model' => $this->findModel($id),
         ]);
     }
 
@@ -79,8 +98,9 @@ class ApplicantController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
+            return $this->render('create',
+                    [
+                    'model' => $model,
             ]);
         }
     }
@@ -98,8 +118,9 @@ class ApplicantController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
+            return $this->render('update',
+                    [
+                    'model' => $model,
             ]);
         }
     }

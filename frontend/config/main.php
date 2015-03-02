@@ -10,6 +10,7 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'language' => 'th_TH',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'user' => [
@@ -27,6 +28,25 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'i18n' => [
+            'translations' => [
+                'acad*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    //'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'acad' => 'acad.php',
+                        'acad/error' => 'error.php',
+                    ],
+                ],
+                'kvgrid*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    //'sourceLanguage' => 'en-US',
+                    
+                ],
+            ],
         ],
         
     ],

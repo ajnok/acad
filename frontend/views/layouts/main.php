@@ -5,6 +5,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use frontend\widgets\Alert;
+//use kartik\widgets\
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -34,13 +35,14 @@ AppAsset::register($this);
                 ],
             ]);
             $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'Contact', 'url' => ['/site/contact']],
+                ['label' => 'หน้าแรก', 'url' => ['/site/index']],
+//                ['label' => 'About', 'url' => ['/site/about']],
+                ['label' => 'ลงทะเบียน', 'url' => ['/applicant/index']],
+//                ['label' => 'Contact', 'url' => ['/site/contact']],
             ];
             if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+//                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+//                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -59,8 +61,16 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+
+            
+            
+        <?php if (isset($this->blocks['content'])): ?>
+            <?= $this->blocks['content'] ?>
+        <?php else: ?>
+            <?= $content ?>
+        <?php endif; ?>
+        
+        
         </div>
     </div>
 

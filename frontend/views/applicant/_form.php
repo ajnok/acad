@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use kartik\widgets\ActiveForm;
 use kartik\builder\Form;
 use yii\widgets\Pjax;
+use kartik\widgets\Alert;
+
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Applicant */
@@ -13,18 +15,43 @@ use yii\widgets\Pjax;
 <?php
 $this->registerJs(
         '$("document").ready(function(){
-        $("#new_country").on("pjax:end", function() {
-            $.pjax.reload({container:"#countries"});  //Reload GridView
+        $("#new_applicant").on("pjax:end", function() {
+            $.pjax.reload({container:"#applicants"});  //Reload GridView
         });
+        
     });'
 );
 ?>
 
 <div class="applicant-form">
+   
     <?php Pjax::begin(['id' => 'new_applicant']) ?>
     <?php
+    $str = Html::a(' คลิกที่นี่เพื่อกลับไปยังหน้าแรก', ['site/index']);
+    $str = $str . '<br />' . '<i class="glyphicon glyphicon-info-sign"></i> หากท่านต้องการแก้ไขข้อมูลหรือยกเลิกการทำรายการโปรดติดต่อ อ.ธีรศิลป์ กันธา โทร. 081-1118176';
+if (Yii::$app->session->hasFlash('success')) {
+    Yii::$app->session->getAllFlashes();
+//    echo("OOOL");
+    echo Alert::widget([
+        'type'=> Alert::TYPE_SUCCESS,
+        'icon' => 'glyphicon glyphicon-ok-sign',
+        'body'=> Yii::$app->session->getFlash('success') . $str,
+//        'delay' => 6000
+    ]);
+}else if((Yii::$app->session->hasFlash('warning'))) {
+    Yii::$app->session->getAllFlashes();
+//    echo("OOOL");
+    echo Alert::widget([
+        'type'=> Alert::TYPE_WARNING,
+        'icon' => 'glyphicon glyphicon-ok-sign',
+        'body'=> Yii::$app->session->getFlash('warning') . $str,
+        'delay' => 2000
+    ]);
+}
+?>
+    <?php
     $form = ActiveForm::begin([
-                'options' => ['data-pjax' => true],
+                'options' => ['data-pjax' => 'true'],
                 'type' => ActiveForm::TYPE_VERTICAL,
 //            'fieldConfig' => [
 //                'template' => '{label}{input}'
@@ -40,7 +67,7 @@ $this->registerJs(
                 'columns' => 3,
                 'attributes' => [
                     'school_name' => ['type' => Form::INPUT_TEXT, 'options' => ['maxlength' => 100,
-                            'placeholder' => 'ป้อนชื่อโรงเรียน']],
+                            'placeholder' => 'ป้อนชื่อโรงเรียน'],'label'=>Yii::t('acad','SCHOOL_NAME')],
                 ]
             ])
             ?>
@@ -55,20 +82,20 @@ $this->registerJs(
                 'columns' => 2,
                 'attributes' => [
                     'firstname' => ['type' => Form::INPUT_TEXT, 'options' => ['maxlength' => 60,
-                            'placeholder' => 'ป้อนชื่อผู้ลงทะเบียน เช่น นายสหกรณ์']],
+                            'placeholder' => 'ป้อนชื่อผู้ลงทะเบียน เช่น นายสหกรณ์'],'label'=>Yii::t('acad','FIRSTNAME')],
                     'lastname' => ['type' => Form::INPUT_TEXT, 'options' => ['maxlength' => 60,
-                            'placeholder' => 'ป้อนนามสกุลผู้ลงทะเบียน เช่น สกุลดี']],
+                            'placeholder' => 'ป้อนนามสกุลผู้ลงทะเบียน เช่น สกุลดี'],'label'=>Yii::t('acad','LASTNAME')],
                     'position' => ['type' => Form::INPUT_TEXT, 'options' => ['maxlength' => 100,
-                            'placeholder' => 'ตำแหน่งงาน']],
-//                    'phone'     => ['type'    => Form::INPUT_TEXT, 'options' => ['maxlength'   => 10,
-//                            'placeholder' => 'ป้อนชื่อผู้ลงทะเบียน เช่น นายสหกรณ์']],
-                    'phone' => [
-                        'type' => Form::INPUT_WIDGET,
-                        'widgetClass' => yii\widgets\MaskedInput::className(),
-                        'options' => ['name' => 'phone','mask' =>'9', 'clientOptions' => ['repeat'=>10,'greedy' => false, 'maxlength' => 12, 'class' => 'form-control']],
-                    ],
+                            'placeholder' => 'ตำแหน่งงาน'],'label'=>Yii::t('acad','POSITION')],
+                    'phone'     => ['type'    => Form::INPUT_TEXT, 'options' => ['maxlength'   => 10,
+                            'placeholder' => 'ป้อนเฉพาะตัวเลขอย่างน้อย 9 หลักและไม่เกิน 10 หลัก โดยไม่ต้องใส่เครื่องหมาย - หรือช่องว่าง'],'label'=>Yii::t('acad','PHONE')],
+//                    'phone' => [
+//                        'type' => Form::INPUT_WIDGET,
+//                        'widgetClass' => yii\widgets\MaskedInput::className(),
+//                        'options' => ['name' => 'phone','mask' =>'9', 'clientOptions' => ['repeat'=>10,'greedy' => false, 'maxlength' => 12, 'class' => 'form-control']],
+//                    ],
                     'email' => ['type' => Form::INPUT_TEXT, 'options' => ['maxlength' => 100,
-                            'placeholder' => 'ตัวอย่าง maesot@kprums.org']],
+                            'placeholder' => 'ตัวอย่าง maesot@kprums.org'],'label'=>Yii::t('acad','EMAIL')],
                     'actions' => [
                         'type' => Form::INPUT_RAW,
                         'value' => '<div style="text-align: right; margin-top: 25px" class="form-group pull-left">' .
