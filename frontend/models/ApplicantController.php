@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers;
+namespace frontend\models;
 
 use Yii;
 use frontend\models\Applicant;
@@ -8,7 +8,6 @@ use frontend\models\ApplicantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 
 /**
  * ApplicantController implements the CRUD actions for Applicant model.
@@ -35,24 +34,11 @@ class ApplicantController extends Controller
     {
         $searchModel = new ApplicantSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new Applicant();
-
-         if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            $model = new Applicant(); //reset model
-        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'model' => $model,
         ]);
-
-
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
     }
 
     /**
